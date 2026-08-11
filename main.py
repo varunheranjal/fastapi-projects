@@ -34,9 +34,16 @@ studio = {
 def root():
     return {"message": "Welcome to the Rent-A-Room app"}
 
+
 @app.get("/rooms", status_code=status.HTTP_200_OK)
 def get_rooms():
     return [apartment, house, studio]
+
+
+@app.get("/rooms/faq", status_code=status.HTTP_200_OK)
+def get_rooms_faq():
+    return {"check_in:" "From 15:00 to 19:00", "check_out:" "From 10:00 to 12:00"}
+
 
 @app.get("/rooms/{room_id}", status_code=status.HTTP_200_OK)
 def get_room(room_id: int):
@@ -44,3 +51,4 @@ def get_room(room_id: int):
         if room["id"] == room_id:
             return room
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Room not found")
+
