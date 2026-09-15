@@ -14,16 +14,24 @@ apartment = {
     "price_per_night": 200,
     "bedrooms": 2,
     "bathrooms": 2,
-    "amenities": ["dial-up speed wifi", "aggressive parallel parking test zone", "one rusty dumbbell (gym)"],
+    "amenities": [
+        "dial-up speed wifi",
+        "aggressive parallel parking test zone",
+        "one rusty dumbbell (gym)"
+    ],
 }
 
 house = {
     "id": 2,
-    "name": "Spooky Mansion Where the Floorboards Judge Your Life Choices",
+    "name": "Spooky Mansionhouse Where the Floorboards Judge Your Life Choices",
     "price_per_night": 300,
     "bedrooms": 3,
     "bathrooms": 3,
-    "amenities": ["wifi that requires a seance", "parking meant for a tricycle", "treadmill that only goes backward (gym)"],
+    "amenities": [
+        "wifi that requires a seance",
+        "parking meant for a tricycle",
+        "treadmill that only goes backward (gym)"
+    ],
 }
 
 studio = {
@@ -32,8 +40,93 @@ studio = {
     "price_per_night": 200,
     "bedrooms": 1,
     "bathrooms": 1,
-    "amenities": ["wifi powered by a single tired hamster", "parking if you abandon your car on the pavement", "emotional support yoga mat (gym)"],
+    "amenities": [
+        "wifi powered by a single tired hamster",
+        "parking if you abandon your car on the pavement",
+        "emotional support yoga mat (gym)"
+    ],
 }
+
+penthouse = {
+    "id": 4,
+    "name": "Luxury Penthouse With a Balcony Bigger Than Your First Flat",
+    "price_per_night": 650,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "amenities": [
+        "fast wifi",
+        "private parking",
+        "rooftop terrace",
+        "proper gym"
+    ],
+}
+
+cottage = {
+    "id": 5,
+    "name": "Quiet Countryside Cottage Where Even Your Phone Gives Up",
+    "price_per_night": 150,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "amenities": [
+        "questionable countryside wifi",
+        "free parking",
+        "fireplace",
+        "garden"
+    ],
+}
+
+loft = {
+    "id": 6,
+    "name": "City Centre Loft Above a Pub You Will Definitely Hear at 1AM",
+    "price_per_night": 275,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "amenities": [
+        "fast wifi",
+        "no parking",
+        "city centre location",
+        "coffee machine"
+    ],
+}
+
+villa = {
+    "id": 7,
+    "name": "Poolside Villa Where You Pretend You Have Your Life Together",
+    "price_per_night": 900,
+    "bedrooms": 4,
+    "bathrooms": 4,
+    "amenities": [
+        "fast wifi",
+        "private parking",
+        "swimming pool",
+        "home gym"
+    ],
+}
+
+basement = {
+    "id": 8,
+    "name": "Budget Basement Room With Surprisingly Optimistic Marketing",
+    "price_per_night": 75,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "amenities": [
+        "wifi near the stairs",
+        "street parking",
+        "shared kitchen"
+    ],
+}
+
+
+rooms = [
+    apartment,
+    house,
+    studio,
+    penthouse,
+    cottage,
+    loft,
+    villa,
+    basement
+]
 
 
 @app.get("/", status_code=status.HTTP_200_OK)
@@ -56,7 +149,7 @@ def get_rooms(
         AfterValidator(fail_if_funny)] = None
 ):
 
-    results = [apartment, house, studio]
+    results = rooms
     if max_price:
         results = [room for room in results if room["price_per_night"] <= max_price]
     if search:
@@ -67,7 +160,7 @@ def get_rooms(
 
 @app.get("/rooms/{room_id}", status_code=status.HTTP_200_OK)
 def get_room(room_id: int):
-    for room in [apartment, house, studio]:
+    for room in rooms:
         if room["id"] == room_id:
             return room
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Room not found")
