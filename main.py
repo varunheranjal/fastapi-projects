@@ -158,6 +158,23 @@ def get_rooms(
 
 
 
+@app.get("/rooms/mansions", status_code=status.HTTP_200_OK)
+def get_mansions(
+    max_price: Annotated[int | None, Query(ge=10, le=10_000)] = None, 
+    search: Annotated[
+        str | None, 
+        Query(min_length=3, max_length=10, title="Search term", description="Provide a Search Term to find rooms (fyi, no funny business)"),
+        AfterValidator(fail_if_funny)] = None
+):
+
+    results = rooms
+    if max_price:
+        results = [room for room in results if room["price_per_night"] <= max_price]
+    if search:
+        results = [room for room in results if search.lower() in room["name"].lower()]
+    return results
+
+
 @app.get("/rooms/{room_id}", status_code=status.HTTP_200_OK)
 def get_room(room_id: int):
     for room in rooms:
